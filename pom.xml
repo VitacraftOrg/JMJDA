@@ -13,6 +13,31 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/VitacraftOrg/JMJDA</url>
+		</repository>
+	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>github</id>
+			<activation>
+				<property>
+					<name>useGitHubPackages</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>github</id>
+					<name>GitHub Packages</name>
+					<url>https://maven.pkg.github.com/VitacraftOrg/JMJDA</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 
     <build>
         <plugins>
