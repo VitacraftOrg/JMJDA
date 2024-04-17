@@ -16,12 +16,12 @@ public class JMBot {
     private final ConfigUtil configUtil = new ConfigUtil("config.yml");
     private ShardManager shardManager;
     private PrimitiveCommandsManager commandsManager;
-
     public JMBot(){
     }
     public JMBot(String token){
         login(token);
     }
+    @Deprecated
     public void login(String token){
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token).enableIntents(GatewayIntent.MESSAGE_CONTENT).enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setStatus(OnlineStatus.ONLINE);
