@@ -22,12 +22,6 @@ jobs:
       - name: Deploy Maven package to GitHub Packages
         run: |
           echo " Deploying Maven package to GitHub Packages..."
-          mvn --batch-mode -DuseGitHubPackages=true deploy
-
-      - name: Store GitHub token securely (optional)
-        uses: actions/checkout@v3  # Optional, for improved security
-        with:
-          repository: ${{ github.repository }}
-          ref: ${{ secrets.GITHUB_TOKEN_REF || 'main' }}  # Use a dedicated secret or specific branch
+          mvn -DuseGitHubPackages=true deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Optional, access token in separate secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
