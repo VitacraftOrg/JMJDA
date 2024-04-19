@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,21 +14,32 @@ import java.util.List;
 public class PrimitiveCommandsManager extends ListenerAdapter {
     private final HashMap<String, PrimitiveCommand> commands = new HashMap<>();
     private char prefix = '?';
+
+    @ApiStatus.Internal
     public PrimitiveCommandsManager(ShardManager shardManager){
         shardManager.addEventListener(this);
     }
+
+    @ApiStatus.Internal
     @Deprecated
-    public PrimitiveCommandsManager(){}
+    public PrimitiveCommandsManager(){
+
+    }
+
+    @ApiStatus.Internal
     @Deprecated
     public void register(ShardManager shardManager){
         shardManager.addEventListener(this);
     }
+
     public void setPrefix(char prefix){
         this.prefix = prefix;
     }
+
     public void registerCommand(PrimitiveCommand command) {
         commands.put(command.getName().toLowerCase(),command);
     }
+
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
 
@@ -60,5 +72,6 @@ public class PrimitiveCommandsManager extends ListenerAdapter {
 
 
     public List<PrimitiveCommand> getCommands(){ return commands.values().stream().toList(); }
+
     public char getPrefix(){ return prefix; }
 }
