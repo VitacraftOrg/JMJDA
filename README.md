@@ -1,5 +1,5 @@
 # JM-JDA
-### by JM Development at Vitacraft
+### by JM Development at Vitacraft [![Publish to GitHub Packages](https://github.com/VitacraftOrg/JMJDA/actions/workflows/publish-to-packages.yml/badge.svg)](https://github.com/VitacraftOrg/JMJDA/actions/workflows/publish-to-packages.yml)
 
 This guide will walk you through the basics of creating a Discord bot using JM JDA Expansion, a tool developed by JM,
 to simplify bot coding with JDA (Java Discord API).
