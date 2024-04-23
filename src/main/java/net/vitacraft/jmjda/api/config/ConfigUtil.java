@@ -138,6 +138,9 @@ public class ConfigUtil {
         return false;
     }
 
+    public void setString(String key, String value){
+        updateConfig(key, value);
+    }
 
     public void setBool(String key, boolean value) {
         updateConfig(key, String.valueOf(value));
