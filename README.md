@@ -1,18 +1,19 @@
-# JMJDA - The JM JDA expansion
-Welcome to the JM JDA Expansion documentation!
+# JM-JDA
+### by JM Development at Vitacraft [![Publish to GitHub Packages](https://github.com/VitacraftOrg/JMJDA/actions/workflows/publish-to-packages.yml/badge.svg)](https://github.com/VitacraftOrg/JMJDA/actions/workflows/publish-to-packages.yml)
+
 This guide will walk you through the basics of creating a Discord bot using JM JDA Expansion, a tool developed by JM,
 to simplify bot coding with JDA (Java Discord API).
 
 
 ### Setting Up Your Project
-First, you need to create a new Java project in your favorite IDE (Integrated Development Environment) or text editor. 
+First, you need to create a new Java project in your favorite IDE (Integrated Development Environment) or text editor.
 Make sure you have JDA and JM JDA Expansion added as dependencies in your project.
 
 You can add the JM JDA Expansion dependency to your pom.xml if you're using Maven:
 ```xml
 <dependency>
-    <groupId>com.vitacraft</groupId>
-    <artifactId>jm-jda</artifactId>
+    <groupId>org.vitacraft</groupId>
+    <artifactId>jmjda</artifactId>
     <version>1.0.0</version> <!-- Replace with the latest version -->
 </dependency>
 ```
