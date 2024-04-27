@@ -38,7 +38,7 @@ jobs:
         run: |
           project_version=$(echo "${{ steps.project_version.outputs.version }}")
           date=$(echo "${{ steps.date.outputs.date }}")
-          new_version="${{ steps.set_env.outputs.env }}-${project_version}-${date}"
+          new_version="${project_version}"
           mvn -B versions:set -DnewVersion="${new_version}"
 
       - name: Build and Package with Maven 📦
