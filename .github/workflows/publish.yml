@@ -10,24 +10,56 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  build_and_release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }}
+      - name: Set Environment 🌍
+        id: set_env
+        run: echo "::set-output name=env::dev"
 
-      - name: Build with Maven
-        run: mvn -B clean package --file pom.xml
+      - name: Get current date 📅
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M')"
+
+      - name: Checkout repository 🔍
+        uses: actions/checkout@v4
+
+      - name: Setup Java ☕️
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: zulu
+
+      - name: Extract Maven project version 🏗️
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project_version
+
+      - name: Update version in pom.xml 🔧
+        run: |
+          project_version=$(echo "${{ steps.project_version.outputs.version }}")
+          date=$(echo "${{ steps.date.outputs.date }}")
+          new_version="${{ steps.set_env.outputs.env }}-${project_version}-${date}"
+          mvn -B versions:set -DnewVersion="${new_version}"
+
+      - name: Build and Package with Maven 📦
+        id: mvn_build
+        run: |
+          mvn clean package
+          if [ ! -d staging ]; then
+            mkdir staging
+          fi
+          cp target/jmjda-*.jar staging/
+          git_hash=$(git rev-parse --short "$GITHUB_SHA")
+          commit_message=$(git log --format=%B -n 1 $GITHUB_SHA)
+          echo "git_hash=$git_hash" >> $GITHUB_ENV
+          artifactPath=$(pwd)/target
+          echo "artifactPath=$artifactPath" >> $GITHUB_ENV
+          # Extract JAR version from the file name and remove hyphens
+          jar_file=$(find $artifactPath -name 'jmjda-*.jar' -print -quit)
+          echo "::set-output name=jarfile::$jar_file"
+          JAR_VERSION=$(echo "$jar_file" | sed -n 's/.*jmjda-\(.*\)\.jar/\1/p; s/-//g')
+          echo "JAR_VERSION=$JAR_VERSION" >> $GITHUB_ENV
 
       - name: Publish Maven Package 📤
         run: |
@@ -35,3 +67,25 @@ jobs:
           mvn --batch-mode -DuseGitHubPackages=true deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release 🏷️
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.set_env.outputs.env }}-${{ steps.project_version.outputs.version }}-${{ steps.date.outputs.date }}
+          release_name: ${{ steps.set_env.outputs.env }}-${{ steps.project_version.outputs.version }}-${{ steps.date.outputs.date }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset 📎
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.mvn_build.outputs.jarfile }}
+          asset_name: jmjda-${{ steps.set_env.outputs.env }}-${{ steps.date.outputs.date }}.jar
+          asset_content_type: application/java-archive
