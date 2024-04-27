@@ -49,16 +49,16 @@ jobs:
           if [ ! -d staging ]; then
             mkdir staging
           fi
-          cp target/JMJDA-*.jar staging/
+          cp target/jmjda-*.jar staging/
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
           commit_message=$(git log --format=%B -n 1 $GITHUB_SHA)
           echo "git_hash=$git_hash" >> $GITHUB_ENV
           artifactPath=$(pwd)/target
           echo "artifactPath=$artifactPath" >> $GITHUB_ENV
           # Extract JAR version from the file name and remove hyphens
-          jar_file=$(find $artifactPath -name 'JMJDA-*.jar' -print -quit)
+          jar_file=$(find $artifactPath -name 'jmjda-*.jar' -print -quit)
           echo "::set-output name=jarfile::$jar_file"
-          JAR_VERSION=$(echo "$jar_file" | sed -n 's/.*JMJDA-\(.*\)\.jar/\1/p; s/-//g')
+          JAR_VERSION=$(echo "$jar_file" | sed -n 's/.*jmjda-\(.*\)\.jar/\1/p; s/-//g')
           echo "JAR_VERSION=$JAR_VERSION" >> $GITHUB_ENV
 
       - name: Publish Maven Package 📤

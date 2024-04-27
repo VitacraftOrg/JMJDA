@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.vitacraft</groupId>
-    <artifactId>JMJDA</artifactId>
+    <artifactId>jmjda</artifactId>
     <version>1.1.2</version>
 
     <distributionManagement>
