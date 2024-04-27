@@ -1,9 +1,8 @@
 name: 🚀 Build, Release, and Deploy prod builds
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 permissions:
   contents: write
