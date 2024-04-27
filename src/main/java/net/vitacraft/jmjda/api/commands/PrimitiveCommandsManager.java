@@ -62,7 +62,7 @@ public class PrimitiveCommandsManager extends ListenerAdapter {
             return;
         }
         for (Permission permission : command.getNeededPermissions()){
-           if(member.hasPermission(permission)){
+            if(member.hasPermission(permission)){
                 command.execute(event, commandArgs);
                 return;
             }
