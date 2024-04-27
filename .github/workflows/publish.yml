@@ -67,25 +67,3 @@ jobs:
           mvn --batch-mode -DuseGitHubPackages=true deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release 🏷️
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.set_env.outputs.env }}-${{ steps.project_version.outputs.version }}-${{ steps.date.outputs.date }}
-          release_name: ${{ steps.set_env.outputs.env }}-${{ steps.project_version.outputs.version }}-${{ steps.date.outputs.date }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset 📎
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.mvn_build.outputs.jarfile }}
-          asset_name: jmjda-${{ steps.set_env.outputs.env }}-${{ steps.date.outputs.date }}.jar
-          asset_content_type: application/java-archive
