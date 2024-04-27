@@ -1,9 +1,11 @@
 package net.vitacraft.jmjda.api.util;
 
+import net.vitacraft.jmjda.api.config.Config;
 import net.vitacraft.jmjda.api.config.ConfigUtil;
+import net.vitacraft.jmjda.api.config.Filetype;
 
 public class log {
-    static ConfigUtil config = new ConfigUtil("config.yml");
+    static Config config = ConfigUtil.getConfig("config.yml", Filetype.YAML);
     public static void console(String message){
         System.out.println(message);
     }
