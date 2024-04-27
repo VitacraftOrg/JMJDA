@@ -3,5 +3,5 @@ public enum Filetype {
     YAML,
     JSON,
     XML,
-
+    TOML
 }

@@ -15,5 +15,4 @@ public interface Config {
     public void setBool(String key, boolean value);
     public void setDouble(String key, double value);
     public void setLong(String key, long value);
-
 }
