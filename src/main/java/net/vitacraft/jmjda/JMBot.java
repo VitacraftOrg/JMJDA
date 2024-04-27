@@ -7,13 +7,16 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.vitacraft.jmjda.api.commands.PrimitiveCommandsManager;
+import net.vitacraft.jmjda.api.config.Config;
 import net.vitacraft.jmjda.api.config.ConfigUtil;
+import net.vitacraft.jmjda.api.config.Filetype;
+import net.vitacraft.jmjda.api.config.YAMLConfig;
 import net.vitacraft.jmjda.api.util.log;
 
 import java.util.Objects;
 
 public class JMBot {
-    private final ConfigUtil configUtil = new ConfigUtil("config.yml");
+    private final YAMLConfig configUtil = (YAMLConfig) ConfigUtil.getConfig("config.yml", Filetype.YAML);
     private ShardManager shardManager;
     private PrimitiveCommandsManager commandsManager;
 
@@ -34,6 +37,8 @@ public class JMBot {
             log.console("Successfully enabled");
         } catch (InvalidTokenException e) {
             log.console("Invalid Token! Disabling...");
+        } catch (Exception exception){
+            log.console("An unexpected Error accrued! Disabling...");
         }
     }
 
@@ -57,7 +62,7 @@ public class JMBot {
         shardManager.shutdown();
     }
 
-    public ConfigUtil getConfig(){
+    public Config getConfig(){
         return configUtil;
     }
 }
