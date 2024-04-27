@@ -1,8 +1,13 @@
 name: 🚀 Build, Release, and Deploy prod builds
 
+#on:
+  #release:
+    #types: [published]
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 
 permissions:
   contents: write
@@ -27,9 +32,11 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B clean package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    - name: Publish Maven Package 📤
+      run: |
+          echo "🚚 Deploying Maven package to GitHub Packages..."
+          mvn --batch-mode -DuseGitHubPackages=true deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
