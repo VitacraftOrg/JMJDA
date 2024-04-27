@@ -1,8 +1,10 @@
 package net.vitacraft.jmjda.api.config;
 
+import net.vitacraft.jmjda.api.util.log;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,7 +185,7 @@ public class YAMLConfig implements Config {
         try (FileWriter writer = new FileWriter(configFile)) {
             yaml.dump(data, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.console(Arrays.toString(e.getStackTrace()));
         }
     }
 }
