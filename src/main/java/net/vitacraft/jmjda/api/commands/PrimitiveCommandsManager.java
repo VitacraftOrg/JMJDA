@@ -15,31 +15,59 @@ public class PrimitiveCommandsManager extends ListenerAdapter {
     private final HashMap<String, PrimitiveCommand> commands = new HashMap<>();
     private char prefix = '?';
 
+    /**
+     * Create a new PrimitiveCommandsManager instance
+     *
+     * @param shardManager the shardManager to register the commands on
+     */
     @ApiStatus.Internal
     public PrimitiveCommandsManager(ShardManager shardManager){
         shardManager.addEventListener(this);
     }
 
+    /**
+     * Create a new PrimitiveCommandsManager instance
+     */
     @ApiStatus.Internal
     @Deprecated
     public PrimitiveCommandsManager(){
 
     }
 
+    /**
+     * Register the PrimitiveCommandsManager on the shardManager
+     *
+     * @param shardManager the shardManager to register the commands on
+     */
     @ApiStatus.Internal
     @Deprecated
     public void register(ShardManager shardManager){
         shardManager.addEventListener(this);
     }
 
+    /**
+     * Set the prefix for the commands
+     *
+     * @param prefix the prefix to set
+     */
     public void setPrefix(char prefix){
         this.prefix = prefix;
     }
 
+    /**
+     * Register a command
+     *
+     * @param command the command to register
+     */
     public void registerCommand(PrimitiveCommand command) {
         commands.put(command.getName().toLowerCase(),command);
     }
 
+    /**
+     * This method is called when a message is received
+     *
+     * @param event the event that was received
+     */
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
 
@@ -71,7 +99,17 @@ public class PrimitiveCommandsManager extends ListenerAdapter {
     }
 
 
+    /**
+     * Get a list of all registered commands
+     *
+     * @return the list of commands
+     */
     public List<PrimitiveCommand> getCommands(){ return commands.values().stream().toList(); }
 
+    /**
+     * Get the prefix for the commands
+     *
+     * @return the prefix
+     */
     public char getPrefix(){ return prefix; }
 }
