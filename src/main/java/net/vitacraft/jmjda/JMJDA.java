@@ -24,6 +24,6 @@ public class JMJDA {
      * @return The version of JMJDA
      */
     public static String getVersion(){
-        return "1.2.1";
+        return "pre-1.2.2";
     }
 }
